@@ -1,7 +1,7 @@
 const { connection } = require('./src/db');
 const server = require('./src/routes/index');
 
-connection.sync()
+connection.sync({force: true})
 .then(() => 
 server.listen(3001, () => {
     console.log('Is listening at 3001');

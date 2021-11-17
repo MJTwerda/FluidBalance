@@ -4,31 +4,32 @@ const { User, Op } = require('../db');
 
 router.use(express.json());
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
+    const { user, password } = req.body;
     try {
-        const searchUsers = await User.findAll();
-        res.json(searchUsers.length !== 0 ? searchUsers : "No hay ningún cliente registrado");  
-    } catch {error => res.status(400).send(error)}
-});
-
-router.get('/:lastName', async (req, res) => {
-    const { name } = req.params;
-    try {
-        const searchUserByLastName = await User.findAll({
-            where: {
-                lastName:{[Op.like]:`${lastName}%`}
-            }
-        })
-        res.json(searchUserByLastName ? searchUserByLastName : "No hay ningún cliente con el apellido ingresado")
+        const createUser = await User.create({user, password});
+        res.json(createUser);
+        
     } catch {error => res.status(400).send(error)}
 })
 
-router.post('/', async (req, res) => {
-    const { name, lastName, email } = req.body;
+router.get('/', async (req, res) => {
     try {
-        const createUser = await User.create({name, lastName, email});
-        res.json(createUser);
-        
+        const searchUsers = await User.findAll();
+        res.json(searchUsers);
+        //res.json(searchUsers.length !== 0 ? searchUsers : ["No hay ningún cliente registrado"]); 
+
+    } catch {error => res.status(400).send(error)}
+});
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const searchUserById = await User.findOne({
+            where: {id}
+        })
+        res.json(searchUserById ? searchUserById : "No se encontró el usuario con ese ID")
+
     } catch {error => res.status(400).send(error)}
 })
 

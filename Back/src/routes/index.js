@@ -5,12 +5,12 @@ const cors = require('cors');
 server.use(cors());
 server.use(express.json());
 
-const Home = require('./User');
+const User = require('./User');
 const Actives = require('./Actives');
-const Pasives = require('./Pasives');
+const Events = require('./Events');
 
-server.use('/', Home);
+server.use('/', User);
 server.use('/actives', Actives);
-server.use('/pasives', Pasives);
+server.use('/event', Events);
 
 module.exports = server;
